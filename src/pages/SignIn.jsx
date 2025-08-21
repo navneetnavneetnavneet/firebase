@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { auth, signInWithGooglePopup } from "../config/firebase";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -24,6 +24,18 @@ const SignIn = () => {
 
     setEmail("");
     setPassword("");
+  };
+
+  const logGoogleUser = () => {
+    signInWithGooglePopup()
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -55,6 +67,12 @@ const SignIn = () => {
             Sign Up
           </Link>
         </p>
+        <button
+          onClick={logGoogleUser}
+          className="px-4 py-2 rounded-md text-lg border-none outline-0 bg-red-500 cursor-pointer"
+        >
+          Sign In with Google
+        </button>
       </div>
     </div>
   );
